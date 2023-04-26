@@ -1,0 +1,60 @@
+import StartFirebase from "../firebaseConfig/index";
+import React from "react";
+import { ref, onValue } from "firebase/database";
+import { Table } from "react-bootstrap";
+
+const db = StartFirebase();
+var max = 0;
+
+export class RealtimeData extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      tableData: []
+    };
+  }
+
+  componentDidMount() {
+    const dbRef = ref(db, "test");
+
+    onValue(dbRef, (snapshot) => {
+      let records = [];
+
+      let data = snapshot.val();
+      max = max < data ? data : max;
+      records.push({ data: data });
+
+      this.setState({ tableData: records });
+    });
+  }
+
+  render() {
+    return (
+      <Table>
+        <thead>
+          <tr>
+            <th>#</th>
+
+            <th>Current</th>
+            <th>Maximum</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {this.state.tableData.map((row, index) => {
+            return (
+              <tr>
+                <td>Temperature:</td>
+
+                <td>{row.data.temperature} °C</td>
+                <td>
+                  {row.data.temperature > max ? row.data.temperature : max} °C
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
+    );
+  }
+}
