@@ -21,7 +21,7 @@ export class RealtimeData extends React.Component {
       let records = [];
 
       let data = snapshot.val();
-      max = max < data ? data : max;
+      if(data>max)max=data;
       records.push({ data: data });
 
       this.setState({ tableData: records });
@@ -48,7 +48,7 @@ export class RealtimeData extends React.Component {
 
                 <td>{row.data.temperature} °C</td>
                 <td>
-                  {row.data.temperature > max ? row.data.temperature : max} °C
+                  {max} °C
                 </td>
               </tr>
             );
