@@ -4,7 +4,7 @@ import { ref, onValue } from "firebase/database";
 import { Table } from "react-bootstrap";
 
 const db = StartFirebase();
-var max = 0;
+
 
 export class RealtimeData extends React.Component {
   constructor() {
@@ -21,7 +21,7 @@ export class RealtimeData extends React.Component {
       let records = [];
 
       let data = snapshot.val();
-      if(data>max)max=data;
+      
       records.push({ data: data });
 
       this.setState({ tableData: records });
@@ -36,7 +36,7 @@ export class RealtimeData extends React.Component {
             <th>#</th>
 
             <th>Current</th>
-            <th>Maximum</th>
+
           </tr>
         </thead>
 
@@ -47,9 +47,7 @@ export class RealtimeData extends React.Component {
                 <td>Temperature:</td>
 
                 <td>{row.data.temperature} °C</td>
-                <td>
-                  {max} °C
-                </td>
+                
               </tr>
             );
           })}
